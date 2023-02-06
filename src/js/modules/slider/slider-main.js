@@ -1,22 +1,21 @@
-export default class Slider {
-  constructor(page, btns) {
-    this.page = document.querySelector(page);
-    this.slider = this.page.children;
-    this.btns = document.querySelectorAll(btns);
-    this.slideIndex = 1;
+import Slider from "./slider";
+
+export default class MainSlider extends Slider {
+  constructor(btns) {
+    super(btns);
   }
 
   showSlider(n) {
-    if (n > this.slider.length) {
+    if (n > this.sliders.length) {
       this.slideIndex = 1;
     }
 
     if (n < 1) {
-      this.slideIndex = this.slider.length;
+      this.slideIndex = this.sliders.length;
     }
 
-    this.slider.forEach(slide => {
-      slide.style.display = 'none';
+    this.sliders.forEach(slider => {
+      slider.style.display = 'none';
     });
 
     try {
@@ -31,7 +30,7 @@ export default class Slider {
         this.hanson.classList.remove('slideInUp');
       }
     } catch (e) { }
-    this.slider[this.slideIndex - 1].style.display = 'block';
+    this.sliders[this.slideIndex - 1].style.display = 'block';
   }
 
 
