@@ -1,6 +1,7 @@
 import MainSlider from "./modules/slider/slider-main";
 import MiniSlider from "./modules/slider/slider-mini";
 import VideoPlayer from "./modules/playVideo";
+import showDifference from "./modules/showDifference";
 
 window.addEventListener('DOMContentLoaded', () => {
   const slider = new MainSlider({ container: '.page', btns: '.next' });
@@ -36,4 +37,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const player = new VideoPlayer('.play__circle', '.overlay');
   player.init();
+
+  const officerold = new showDifference('.officerold .plus', '.officerold .officer__card-item');
+  officerold.render();
+
+  const officernew = new showDifference('.officernew .plus', '.officernew .officer__card-item');
+  officernew.render();
 });
