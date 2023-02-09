@@ -1,4 +1,4 @@
-export default class showDifference {
+export default class ShowDifference {
   constructor(trigger, cardsSelector) {
     this.btn = document.querySelector(trigger);
     this.cards = document.querySelectorAll(cardsSelector);
