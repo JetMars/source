@@ -8,6 +8,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const slider = new MainSlider({ container: '.page', btns: '.next' });
   slider.render();
 
+  const modulePageSlider = new MainSlider({
+    container: '.moduleapp',
+    btns: '.next',
+    prevmodules: '.prevmodule',
+    nextmodules: '.nextmodule',
+  });
+  modulePageSlider.render();
+
   const showUpSlider = new MiniSlider({
     container: '.showup__content-slider',
     next: '.showup__next',

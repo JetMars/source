@@ -6,10 +6,14 @@ export default class Slider {
     prev = null,
     active = '',
     animate = false,
-    autoPlay = false
+    autoPlay = false,
+    nextmodules = null,
+    prevmodules = null,
   } = {}) {
     this.container = document.querySelector(container);
-    this.sliders = this.container.children;
+    try {
+      this.sliders = this.container.children;
+    } catch (err) { }
     this.btns = document.querySelectorAll(btns);
     this.next = document.querySelector(next);
     this.prev = document.querySelector(prev);
@@ -17,5 +21,7 @@ export default class Slider {
     this.active = active;
     this.animate = animate;
     this.autoPlay = autoPlay;
+    this.nextmodules = document.querySelectorAll(nextmodules);
+    this.prevmodules = document.querySelectorAll(prevmodules);
   }
 }

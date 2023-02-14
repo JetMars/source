@@ -14,13 +14,15 @@ export default class ShowDifference {
   }
 
   addCards(items, counter) {
-    this.btn.addEventListener('click', () => {
-      items[counter].classList.add('animated', 'fadeIn');
-      items[counter++].style.display = 'flex';
-      if (counter >= items.length - 1) {
-        items[items.length - 1].remove();
-      }
-    });
+    try {
+      this.btn.addEventListener('click', () => {
+        items[counter].classList.add('animated', 'fadeIn');
+        items[counter++].style.display = 'flex';
+        if (counter >= items.length - 1) {
+          items[items.length - 1].remove();
+        }
+      });
+    } catch (error) { }
   }
 
   render() {

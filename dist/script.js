@@ -5190,6 +5190,13 @@ window.addEventListener('DOMContentLoaded', function () {
     btns: '.next'
   });
   slider.render();
+  var modulePageSlider = new _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    container: '.moduleapp',
+    btns: '.next',
+    prevmodules: '.prevmodule',
+    nextmodules: '.nextmodule'
+  });
+  modulePageSlider.render();
   var showUpSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
     container: '.showup__content-slider',
     next: '.showup__next',
@@ -5545,14 +5552,16 @@ function () {
   }, {
     key: "addCards",
     value: function addCards(items, counter) {
-      this.btn.addEventListener('click', function () {
-        items[counter].classList.add('animated', 'fadeIn');
-        items[counter++].style.display = 'flex';
+      try {
+        this.btn.addEventListener('click', function () {
+          items[counter].classList.add('animated', 'fadeIn');
+          items[counter++].style.display = 'flex';
 
-        if (counter >= items.length - 1) {
-          items[items.length - 1].remove();
-        }
-      });
+          if (counter >= items.length - 1) {
+            items[items.length - 1].remove();
+          }
+        });
+      } catch (error) {}
     }
   }, {
     key: "render",
@@ -5633,10 +5642,10 @@ var MainSlider =
 function (_Slider) {
   _inherits(MainSlider, _Slider);
 
-  function MainSlider(btns) {
+  function MainSlider(container, btns, prevmodules, nextmodules) {
     _classCallCheck(this, MainSlider);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(MainSlider).call(this, btns));
+    return _possibleConstructorReturn(this, _getPrototypeOf(MainSlider).call(this, container, btns, prevmodules, nextmodules));
   }
 
   _createClass(MainSlider, [{
@@ -5644,34 +5653,35 @@ function (_Slider) {
     value: function showSlider(n) {
       var _this = this;
 
-      if (n > this.sliders.length) {
-        this.slideIndex = 1;
-      }
-
-      if (n < 1) {
-        this.slideIndex = this.sliders.length;
-      }
-
-      this.sliders.forEach(function (slider) {
-        slider.style.display = 'none';
-      });
-
-      try {
-        this.hanson.style.opacity = '0';
-
-        if (n === 3) {
-          this.hanson.classList.add('animated');
-          setTimeout(function () {
-            _this.hanson.style.opacity = '1';
-
-            _this.hanson.classList.add('slideInUp');
-          }, 3000);
-        } else {
-          this.hanson.classList.remove('slideInUp');
+      if (this.container) {
+        if (n > this.sliders.length) {
+          this.slideIndex = 1;
         }
-      } catch (e) {}
 
-      this.sliders[this.slideIndex - 1].style.display = 'block';
+        if (n < 1) {
+          this.slideIndex = this.sliders.length;
+        }
+
+        this.sliders.forEach(function (slider) {
+          slider.style.display = 'none';
+        });
+        this.sliders[this.slideIndex - 1].style.display = 'block';
+
+        try {
+          this.hanson.style.opacity = '0';
+
+          if (n === 3) {
+            this.hanson.classList.add('animated');
+            setTimeout(function () {
+              _this.hanson.style.opacity = '1';
+
+              _this.hanson.classList.add('slideInUp');
+            }, 3000);
+          } else {
+            this.hanson.classList.remove('slideInUp');
+          }
+        } catch (e) {}
+      }
     }
   }, {
     key: "plusIndex",
@@ -5679,9 +5689,33 @@ function (_Slider) {
       this.showSlider(this.slideIndex += n);
     }
   }, {
+    key: "bindTriggers",
+    value: function bindTriggers() {
+      var _this2 = this;
+
+      this.nextmodules.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          _this2.plusIndex(1);
+        });
+      });
+      this.prevmodules.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          _this2.plusIndex(-1);
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
+
+      this.bindTriggers();
 
       try {
         this.hanson = document.querySelector('.hanson');
@@ -5689,14 +5723,16 @@ function (_Slider) {
 
       this.showSlider(this.slideIndex);
       this.btns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          _this2.plusIndex(1);
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          _this3.plusIndex(1);
         });
         btn.parentElement.previousElementSibling.addEventListener('click', function (e) {
           e.preventDefault();
-          _this2.slideIndex = 1;
+          _this3.slideIndex = 1;
 
-          _this2.showSlider(_this2.slideIndex);
+          _this3.showSlider(_this3.slideIndex);
         });
       });
     }
@@ -5856,15 +5892,17 @@ function (_Slider) {
     value: function init() {
       var _this3 = this;
 
-      this.container.style.cssText = "\n      display: flex;\n      flex-wrap: wrap;\n      overflow: hidden;\n      align-items: flex-start;\n    ";
-      this.bindTrigger();
-      this.activeSlider();
+      try {
+        this.container.style.cssText = "\n      display: flex;\n      flex-wrap: wrap;\n      overflow: hidden;\n      align-items: flex-start;\n    ";
+        this.bindTrigger();
+        this.activeSlider();
 
-      if (this.autoPlay) {
-        setInterval(function () {
-          return _this3.nextSlide();
-        }, 5000);
-      }
+        if (this.autoPlay) {
+          setInterval(function () {
+            return _this3.nextSlide();
+          }, 5000);
+        }
+      } catch (err) {}
     }
   }]);
 
@@ -5902,12 +5940,20 @@ var Slider = function Slider() {
       _ref$animate = _ref.animate,
       animate = _ref$animate === void 0 ? false : _ref$animate,
       _ref$autoPlay = _ref.autoPlay,
-      autoPlay = _ref$autoPlay === void 0 ? false : _ref$autoPlay;
+      autoPlay = _ref$autoPlay === void 0 ? false : _ref$autoPlay,
+      _ref$nextmodules = _ref.nextmodules,
+      nextmodules = _ref$nextmodules === void 0 ? null : _ref$nextmodules,
+      _ref$prevmodules = _ref.prevmodules,
+      prevmodules = _ref$prevmodules === void 0 ? null : _ref$prevmodules;
 
   _classCallCheck(this, Slider);
 
   this.container = document.querySelector(container);
-  this.sliders = this.container.children;
+
+  try {
+    this.sliders = this.container.children;
+  } catch (err) {}
+
   this.btns = document.querySelectorAll(btns);
   this.next = document.querySelector(next);
   this.prev = document.querySelector(prev);
@@ -5915,6 +5961,8 @@ var Slider = function Slider() {
   this.active = active;
   this.animate = animate;
   this.autoPlay = autoPlay;
+  this.nextmodules = document.querySelectorAll(nextmodules);
+  this.prevmodules = document.querySelectorAll(prevmodules);
 };
 
 
